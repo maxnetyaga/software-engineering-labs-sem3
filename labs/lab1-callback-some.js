@@ -1,12 +1,27 @@
+"use strict";
+
 const wrapAsync =
     (fn) =>
     (...args) =>
         setTimeout(() => fn(...args), Math.floor(Math.random() * 1000));
 
+const measureExecutionTime = (fn, label, cb) => {
+    const start = performance.now();
+
+    fn((err, result) => {
+        if (err) {
+            return cb(err);
+        }
+
+        const end = performance.now();
+        console.log(`${label} execution time: ${(end - start).toFixed(2)} ms`);
+
+        cb(null, result);
+    });
+};
 // ######################################################################### //
 
-Array.prototype.asyncSequentialSome = function (predicate, cb) {
-
+const asyncSequentialSome = function (predicate, cb) {
     let id = 0;
 
     const next = () => {
@@ -17,7 +32,6 @@ Array.prototype.asyncSequentialSome = function (predicate, cb) {
                 if (flag) {
                     cb(null, true);
                 } else {
-                    console.log(id);
                     id += 1;
                     next();
                 }
@@ -34,20 +48,26 @@ const x = [1, 2, 3, 4, 5];
 const asyncImpossiblePredicate = wrapAsync((data, cb) => cb(null, data >= 10));
 const asyncPossiblePredicate = wrapAsync((data, cb) => cb(null, data == 2));
 
-x.asyncSequentialSome(asyncImpossiblePredicate, (err, result) => {
-    console.log(
-        "asyncSequentialSome | asyncImpossiblePredicate: ",
-        "error: " + err,
-        " # ",
-        "result: " + result
-    );
-});
+measureExecutionTime(
+    asyncSequentialSome.bind(x, asyncImpossiblePredicate),
+    "asyncSequentialSome | asyncImpossiblePredicate",
+    (err, result) =>
+        console.log(
+            "asyncSequentialSome | asyncImpossiblePredicate: ",
+            "error: " + err,
+            " # ",
+            "result: " + result
+        )
+);
 
-x.asyncSequentialSome(asyncPossiblePredicate, (err, result) => {
-    console.log(
-        "asyncSequentialSome | asyncPossiblePredicate: ",
-        "error: " + err,
-        " # ",
-        "result: " + result
-    );
-});
+measureExecutionTime(
+    asyncSequentialSome.bind(x, asyncPossiblePredicate),
+    "asyncSequentialSome | asyncPossiblePredicate",
+    (err, result) =>
+        console.log(
+            "asyncSequentialSome | asyncPossiblePredicate: ",
+            "error: " + err,
+            " # ",
+            "result: " + result
+        )
+);
