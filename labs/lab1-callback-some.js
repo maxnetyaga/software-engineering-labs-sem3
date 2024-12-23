@@ -6,9 +6,8 @@ const wrapAsync =
 // ######################################################################### //
 
 Array.prototype.asyncSequentialSome = function (predicate, cb) {
-    console.log("Inside asyncSome");
 
-    id = 0;
+    let id = 0;
 
     const next = () => {
         if (id < this.length) {
@@ -39,14 +38,16 @@ x.asyncSequentialSome(asyncImpossiblePredicate, (err, result) => {
     console.log(
         "asyncSequentialSome | asyncImpossiblePredicate: ",
         "error: " + err,
+        " # ",
         "result: " + result
     );
 });
 
 x.asyncSequentialSome(asyncPossiblePredicate, (err, result) => {
     console.log(
-        "asyncSequentialSome | asyncPossiblePredicate ",
+        "asyncSequentialSome | asyncPossiblePredicate: ",
         "error: " + err,
+        " # ",
         "result: " + result
     );
 });
