@@ -115,14 +115,15 @@ measureExecutionTime(
                         measureExecutionTime(
                             asyncParallelSome.bind(x, asyncPossiblePredicate),
                             "asyncParallelSome | asyncPossiblePredicate",
-                            (err, result) =>
+                            (err, result) => {
                                 console.log(
                                     "asyncParallelSome | asyncPossiblePredicate: ",
                                     "error: " + err,
                                     " # ",
                                     "result: " + result,
                                     "\n"
-                                )
+                                );
+                            }
                         );
                     }
                 );
