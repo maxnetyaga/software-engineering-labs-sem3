@@ -9,7 +9,8 @@ const wrapAsync =
                     if (err) reject(err);
                     else resolve(result);
                 });
-            }, Math.floor(Math.random() * 500));
+                // }, Math.floor(Math.random() * 500));
+            }, 100);
         });
 
 const measureExecutionTime = (fn, label) => {
@@ -49,7 +50,6 @@ const asyncParallelSome = function (predicate) {
 
     return new Promise((resolve, reject) => {
         let resolved = false;
-        let remaining = promises.length;
 
         promises.forEach((p) => {
             p.then((result) => {
