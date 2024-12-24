@@ -56,11 +56,11 @@ const asyncParallelSome = function (predicate, cb) {
                     errors.push(err);
                 }
 
-                if (flag) globalFlag = flag;
+                if (flag) globalFlag = true;
 
                 if (
                     (completed === this.length && !globalFlag) ||
-                    (globalFlag && flag)
+                    flag
                 ) {
                     if (errors.length !== 0) {
                         cb(new AggregateError(errors), null);
